@@ -74,3 +74,6 @@ def filter_students_by_gender(gender: str) -> list[Student]:
         result = session.query(Student).filter(Student.gender==gender).all()
 
     return result
+
+def filter_students_by_gpa(min_gpa: float, max_gpa: float) -> list[Student]:
+    pass
