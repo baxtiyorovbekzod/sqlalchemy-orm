@@ -68,9 +68,9 @@ init_db()
 # )
 
 
-# all_certificates = get_all_certificates()
-# for c in all_certificates:
-#     print(c.certificate_code, c.title, c.is_verified)
+all_certificates = get_all_certificates()
+for c in all_certificates:
+    print(c.certificate_code, c.title, c.is_verified)
 
 
 # unverified = get_unverified_certificates()
