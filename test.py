@@ -13,6 +13,12 @@ from school.crud import (
     add_score,
     get_scores,
     get_student_with_scores,
+    create_certificate,
+    get_all_certificates,
+    get_unverified_certificates,
+    get_certificates_by_student,
+    get_certificate_by_code,
+    get_last_five_certificates,
 )
 
 init_db()
@@ -52,6 +58,34 @@ init_db()
 # add_score(88, 'english', 4)
 # print(get_scores(87))
 
-print(get_student_with_scores()[86:88])
+# create_certificate(
+#     student_id=6,
+#     title='Learn Python3',
+#     content='Bu sertifikat Python3 ni mukammal urganganlarga beriladi',
+#     issued_at=datetime.utcnow(),
+#     certificate_code=generate_certificate_code(),
+#     is_verified=True
+# )
+
+
+# all_certificates = get_all_certificates()
+# for c in all_certificates:
+#     print(c.certificate_code, c.title, c.is_verified)
+
+
+# unverified = get_unverified_certificates()
+# for c in unverified:
+#     print(c.certificate_code, c.title, c.is_verified)
+
+
+# student_certificates = get_certificates_by_student(1)
+# for c in student_certificates:
+#     print(c.title, c.issued_at)
+
+
+
+# last_five = get_last_five_certificates()
+# for c in last_five:
+#     print(c.certificate_code, c.title, c.issued_at, f"Student id: {c.student_id}" )
 
 

@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import (
-    Column, Integer, String, Date, DateTime, Text, Float, ForeignKey,
+    Column, Integer, String, Date, DateTime, Text, Float, ForeignKey, Boolean
 )
 from sqlalchemy.orm import relationship
 from .db import Base
@@ -17,7 +17,7 @@ class Student(Base):
     bio = Column('bio', Text)
     gpa = Column('gpa', Float, nullable=False)
 
-    scores = relationship('Score', back_populates='student')
+    certificates = relationship('Certificate', back_populates='student')
 
     created_at = Column('created_at', DateTime, default=datetime.now)
     updated_at = Column('updated_at', DateTime, default=datetime.now, onupdate=datetime.now)
@@ -48,4 +48,23 @@ class Score(Base):
 
     def __repr__(self):
         return f'Score(id={self.score_id}, name="{self.subject}", ball={self.ball}, student={self.student_id})'
+
+class Certificate(Base):
+    __tablename__ = 'certificates'
+    id = Column('id', Integer, primary_key=True, nullable=False)
+    student_id = Column('student_id', ForeignKey('students.student_id', ondelete='CASCADE'))
+    title = Column('title', String(length=256), nullable=False)
+    content = Column('content', Text, nullable=False)
+    issued_at = Column('issued_at', DateTime, default=datetime.now)
+    certificate_code = Column('certificate_code', String(256), unique=True)
+    is_verified = Column('is_verified', Boolean, default=False)
+
+    student = relationship('Student', back_populates='certificates')
+
+
+    def __str__(self):
+        return f"Certificate(title={self.title}, code={self.certificate_code}, student_id={self.student_id})"
+
     
+    def __repr__(self):
+        return f"<Certificate id={self.id}, title='{self.title}', student_id={self.student_id}>"    

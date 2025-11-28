@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import or_, not_, and_
-from .models import Student, Score
+from .models import Student, Score , Certificate
 from .db import get_db
 
 
@@ -71,15 +71,15 @@ def delete_student(student_id: int):
 
 def filter_students_by_gender(gender: str) -> list[Student]:
     with get_db() as session:
-        # result = session.query(Student).filter(Student.gender==gender).all()
+        
         result = session.query(Student).filter_by(gender=gender).all()
 
     return result
 
 def filter_students_by_gpa(min_gpa: float, max_gpa: float) -> list[Student]:
     with get_db() as session:
-        # result = session.query(Student).filter(Student.gpa >= min_gpa, Student.gpa <= max_gpa).all()
-        result = session.query(Student).filter(Student.gpa.between(min_gpa, max_gpa)).all() # between
+        
+        result = session.query(Student).filter(Student.gpa.between(min_gpa, max_gpa)).all()
 
     return result
 
@@ -116,3 +116,31 @@ def get_student_with_scores():
     
     return result
     
+def create_certificate(student_id, title, content, issued_at=None, certificate_code=None, is_verified=False):
+    with get_db() as session:
+        session.commit()
+        
+def get_all_certificates() -> list[Certificate]:
+    with get_db() as session:
+        certificates = session.query(Certificate).all()
+    return certificates
+
+def get_unverified_certificates() -> list[Certificate]:
+    with get_db() as session:
+        certificates = session.query(Certificate).filter(Certificate.is_verified == False).all()
+    return certificates
+
+def get_certificates_by_student(student_id: int) -> list[Certificate]:
+    with get_db() as session:
+        certificates = session.query(Certificate).filter(Certificate.student_id == student_id).all()
+    return certificates
+
+def get_certificate_by_code(certificate_code: str) -> Certificate | None:
+    with get_db() as session:
+        certificate = session.query(Certificate).filter(Certificate.certificate_code == certificate_code).first()
+    return certificate
+
+def get_last_five_certificates() -> list[Certificate]:
+    with get_db() as session:
+        certificates = session.query(Certificate).order_by(Certificate.issued_at.desc()).all()
+    return certificates[:5]    
